@@ -1,0 +1,25 @@
+# Node modules
+node_modules/
+
+# Compiled output
+dist/
+
+# Logs
+logs/
+*.log
+
+# Environment variables
+.env
+
+# IDE-specific files
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+
+# TypeORM cache
+typeorm-cache/
+
+# TypeScript build cache
+*.tsbuildinfo
