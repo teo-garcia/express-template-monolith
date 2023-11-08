@@ -4,6 +4,9 @@
   "main": "index.js",
   "author": "teo-garcia",
   "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "dev:api": "nodemon src/index.ts",
     "build:api": "docker compose up app",
@@ -37,10 +40,10 @@
     "@types/node": "^20.8.4",
     "@types/passport": "^1.0.13",
     "@types/passport-jwt": "^3.0.10",
-    "@typescript-eslint/eslint-plugin": "^6.7.5",
-    "@typescript-eslint/parser": "^6.7.5",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
     "concurrently": "^8.2.2",
-    "eslint": "^8.51.0",
+    "eslint": "^8.53.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.0.1",
