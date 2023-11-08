@@ -1,6 +1,6 @@
-import { db } from '../lib/db'
+import { db } from '../lib/misc/db'
 import { User } from '../entities/user.entity'
-import { hashPassword } from '../lib/bcrypt'
+import { hashPassword } from '../lib/auth/bcrypt'
 
 export class UserService {
   private userRepository = db.getRepository(User)

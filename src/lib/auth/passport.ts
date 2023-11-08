@@ -4,8 +4,8 @@ import {
   Strategy as JwtStrategy,
   VerifiedCallback,
 } from 'passport-jwt'
-import { UserService } from '../services/user.services'
-import type { User } from '../entities/user.entity'
+import { UserService } from '../../services/user.services'
+import type { User } from '../../entities/user.entity'
 import type { StrategyOptions } from 'passport-jwt'
 
 const userService = new UserService()

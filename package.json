@@ -8,7 +8,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "dev:api": "nodemon src/index.ts",
+    "dev:api": "docker-compose -f docker-compose.dev.yml up app",
     "build:api": "docker compose up app",
     "serve:api": "pm2 start .fastify",
     "dev:db": "docker-compose -f docker-compose.dev.yml up db",
@@ -31,7 +31,8 @@
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.17",
     "typescript": "^5.2.2",
-    "winston": "^3.11.0"
+    "winston": "^3.11.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.4",

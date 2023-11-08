@@ -1,9 +1,11 @@
 import { Router } from 'express'
 import type { Response, Request } from 'express'
 import { UserService } from '../services/user.services'
-import { generateJWT } from '../lib/jwt'
-import { comparePasswords } from '../lib/bcrypt'
-import { logger } from '../lib/logger'
+import { generateJWT } from '../lib/auth/jwt'
+import { comparePasswords } from '../lib/auth/bcrypt'
+import { logger } from '../lib/misc/logger'
+import { validateSchema } from '../lib/misc/validateSchema'
+import { signUpSchema, signInSchema } from '../lib/misc/schemas'
 
 export class AuthController {
   private userService: UserService
@@ -16,8 +18,8 @@ export class AuthController {
   }
 
   private initializeRoutes() {
-    this.router.post('/signup', this.signup)
-    this.router.post('/signin', this.signin)
+    this.router.post('/signup', validateSchema(signUpSchema), this.signup)
+    this.router.post('/signin', validateSchema(signInSchema), this.signin)
   }
 
   public signup = async (req: Request, res: Response) => {

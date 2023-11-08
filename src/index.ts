@@ -5,12 +5,12 @@ import passport from 'passport'
 import { HealthcheckController } from './controllers/healthcheck.controller'
 import { UserController } from './controllers/user.controller'
 import { AuthController } from './controllers/auth.controller'
-import { db } from './lib/db'
-import { logger, requestsLogger } from './lib/logger'
+import { db } from './lib/misc/db'
+import { logger, requestsLogger } from './lib/misc/logger'
 
 const host = process.env?.SERVER_HOST || '0.0.0.0'
 const port = parseInt(process.env?.PORT as string) || 3000
-const baseUrl = `http://${host}:port`
+const baseUrl = `http://${host}:${port}`
 const app = express()
 
 db.initialize()
@@ -39,5 +39,5 @@ app.use('/users', new UserController().getRouter())
 app.use('/auth', new AuthController().getRouter())
 
 app.listen(port, host, () => {
-  logger.info(`http server running on ${baseUrl}`)
+  logger.info(`server running on ${baseUrl}`)
 })
