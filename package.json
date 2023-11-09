@@ -17,7 +17,8 @@
     "serve:db": "docker compose up db",
     "dev": "concurrently --names 'app,db' -c 'bgBlue.bold,bgGreen.bold' \"yarn dev:api\" \"yarn dev:db\"",
     "build": "concurrently --names 'app,db' -c 'bgBlue.bold,bgGreen.bold' \"yarn build:api\" \"yarn serve:db\"",
-    "migrate:db": "npx typeorm-ts-node-esm migration:run -d 'src/lib/db.ts'"
+    "migrate:db": "npx typeorm-ts-node-esm migration:run -d 'src/lib/db.ts'",
+    "lint:js": "eslint src/**/*.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -48,6 +49,8 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.0.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.2",
     "nodemon": "^3.0.1",
     "prettier": "^3.0.3",
     "ts-node": "^10.9.1"

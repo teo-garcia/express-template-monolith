@@ -8,7 +8,7 @@ This is a monolithic Express template project for building backend applications.
 ## Requirements
 
 - Node.js 18+
-- Docker
+- Dockergh i
 - Yarn
 
 ## Installation
