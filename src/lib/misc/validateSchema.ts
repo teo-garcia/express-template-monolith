@@ -9,9 +9,14 @@ const validateSchema =
       next()
     } catch (error) {
       if (error instanceof ZodError) {
-        res
-          .status(400)
-          .json({ data: null, message: 'Error, invalid schema', status: 400 })
+        const errorDetails = error.errors.map((err) => {
+          return `${err.path.join('.')} ${err.message.toLowerCase()}`
+        })
+        res.status(400).json({
+          data: null,
+          message: `Error, invalid schema: ${errorDetails.join(', ')}`,
+          status: 400,
+        })
       } else {
         next(error)
       }

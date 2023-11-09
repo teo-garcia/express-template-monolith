@@ -17,8 +17,9 @@
     "serve:db": "docker compose up db",
     "dev": "concurrently --names 'app,db' -c 'bgBlue.bold,bgGreen.bold' \"yarn dev:api\" \"yarn dev:db\"",
     "build": "concurrently --names 'app,db' -c 'bgBlue.bold,bgGreen.bold' \"yarn build:api\" \"yarn serve:db\"",
-    "migrate:db": "npx typeorm-ts-node-esm migration:run -d 'src/lib/db.ts'",
-    "lint:js": "eslint src/**/*.ts"
+    "migrate:db": "npx typeorm-ts-node-esm migration:run -d 'src/lib/misc/db.ts'",
+    "lint:js": "eslint src/**/*.ts",
+    "test:unit": "jest --passWithNoTests"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -39,9 +40,11 @@
     "@types/bcryptjs": "^2.4.4",
     "@types/cors": "^2.8.14",
     "@types/express": "^4.17.19",
+    "@types/jest": "^29.5.8",
     "@types/node": "^20.8.4",
     "@types/passport": "^1.0.13",
     "@types/passport-jwt": "^3.0.10",
+    "@types/supertest": "^2.0.16",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
     "concurrently": "^8.2.2",
@@ -50,9 +53,12 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.0.1",
     "husky": "^8.0.3",
+    "jest": "^29.7.0",
     "lint-staged": "^15.0.2",
     "nodemon": "^3.0.1",
     "prettier": "^3.0.3",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1"
   }
 }

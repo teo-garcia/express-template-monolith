@@ -41,3 +41,5 @@ app.use('/auth', new AuthController().getRouter())
 app.listen(port, host, () => {
   logger.info(`server running on ${baseUrl}`)
 })
+
+export { app }

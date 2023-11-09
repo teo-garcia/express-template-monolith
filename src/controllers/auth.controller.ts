@@ -6,8 +6,7 @@ import { comparePasswords } from '../lib/auth/bcrypt'
 import { logger } from '../lib/misc/logger'
 import { validateSchema } from '../lib/misc/validateSchema'
 import { signUpSchema, signInSchema } from '../lib/misc/schemas'
-
-export class AuthController {
+class AuthController {
   private userService: UserService
   private router: Router
 
@@ -85,3 +84,5 @@ export class AuthController {
     return this.router
   }
 }
+
+export { AuthController }

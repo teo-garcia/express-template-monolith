@@ -11,5 +11,5 @@ COPY . .
 
 EXPOSE 3000
 
-CMD yarn migrate:db && nodemon src/index.ts
+CMD yarn migrate:db && yarn nodemon src/index.ts
 
