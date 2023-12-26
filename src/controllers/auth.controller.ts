@@ -1,31 +1,21 @@
 import { Router } from 'express'
 import type { Response, Request } from 'express'
-import { UserService } from '../services/user.services'
+import { UserService } from '../services/user.service'
 import { generateJWT } from '../lib/auth/jwt'
 import { comparePasswords } from '../lib/auth/bcrypt'
 import { logger } from '../lib/misc/logger'
 import { validateSchema } from '../lib/misc/validateSchema'
 import { signUpSchema, signInSchema } from '../lib/misc/schemas'
-class AuthController {
-  private userService: UserService
-  private router: Router
 
-  constructor() {
-    this.userService = new UserService()
-    this.router = Router()
-    this.initializeRoutes()
-  }
+const AuthController = () => {
+  const router = Router()
 
-  private initializeRoutes() {
-    this.router.post('/signup', validateSchema(signUpSchema), this.signup)
-    this.router.post('/signin', validateSchema(signInSchema), this.signin)
-  }
-
-  public signup = async (req: Request, res: Response) => {
+  const createUser = async (req: Request, res: Response) => {
     const { data } = req.body
     const { first_name, last_name, email, password } = data
+
     try {
-      const userExists = await this.userService.getUserByEmail(email)
+      const userExists = await UserService().getByEmail(email)
       if (userExists) {
         res.status(409).json({
           status: 409,
@@ -35,7 +25,7 @@ class AuthController {
         return
       }
 
-      await this.userService.createUser(first_name, last_name, email, password)
+      await UserService().create(first_name, last_name, email, password)
 
       res
         .status(201)
@@ -48,11 +38,12 @@ class AuthController {
     }
   }
 
-  public signin = async (req: Request, res: Response) => {
+  const createSession = async (req: Request, res: Response) => {
     const { data } = req.body
     const { email, password } = data
+
     try {
-      const user = await this.userService.getUserByEmail(email)
+      const user = await UserService().getByEmail(email)
       const passwordMatches =
         user && (await comparePasswords(password, user.password))
 
@@ -80,9 +71,14 @@ class AuthController {
     }
   }
 
-  public getRouter() {
-    return this.router
+  const initializeRoutes = () => {
+    router.post('/signup', validateSchema(signUpSchema), createUser)
+    router.post('/signin', validateSchema(signInSchema), createSession)
   }
+
+  initializeRoutes()
+
+  return router
 }
 
 export { AuthController }

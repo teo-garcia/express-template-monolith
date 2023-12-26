@@ -1,33 +1,14 @@
 import type { Request, Response } from 'express'
 import { Router } from 'express'
-import { UserService } from '../services/user.services'
+import { UserService } from '../services/user.service'
 import { logger } from '../lib/misc/logger'
 
-class UserController {
-  private userService: UserService
-  private router: Router
+const UserController = () => {
+  const router = Router()
 
-  constructor() {
-    this.userService = new UserService()
-    this.router = Router()
-    this.initializeRoutes()
-  }
-
-  private initializeRoutes() {
-    this.router.get('/', this.getAllUsers)
-    this.router.get('/:id', this.getUserById)
-    this.router.post('/', this.createUser)
-    this.router.put('/:id', this.updateUser)
-    this.router.delete('/:id', this.deleteUser)
-  }
-
-  public getRouter() {
-    return this.router
-  }
-
-  public getAllUsers = async (req: Request, res: Response) => {
+  const getAll = async (req: Request, res: Response) => {
     try {
-      const users = await this.userService.getAllUsers()
+      const users = await UserService().getAll()
       res.json(users)
     } catch (error) {
       if (error instanceof Error) logger.error(error.message)
@@ -37,11 +18,11 @@ class UserController {
     }
   }
 
-  public getUserById = async (req: Request, res: Response) => {
+  const getById = async (req: Request, res: Response) => {
     const userId = req.params.id
 
     try {
-      const user = await this.userService.getUserById(userId)
+      const user = await UserService().getById(userId)
       if (user) {
         res.json({
           data: user,
@@ -59,11 +40,11 @@ class UserController {
     }
   }
 
-  public createUser = async (req: Request, res: Response) => {
+  const create = async (req: Request, res: Response) => {
     const { first_name, last_name, email, password } = req.body
 
     try {
-      const newUser = await this.userService.createUser(
+      const newUser = await UserService().create(
         first_name,
         last_name,
         email,
@@ -76,12 +57,12 @@ class UserController {
     }
   }
 
-  public updateUser = async (req: Request, res: Response) => {
+  const updateById = async (req: Request, res: Response) => {
     const userId = req.params.id
     const { first_name, last_name, email, password } = req.body
 
     try {
-      const updatedUser = await this.userService.updateUser(
+      const updatedUser = await UserService().updateById(
         userId,
         first_name,
         last_name,
@@ -103,11 +84,11 @@ class UserController {
     }
   }
 
-  public deleteUser = async (req: Request, res: Response) => {
+  const deleteById = async (req: Request, res: Response) => {
     const userId = req.params.id
 
     try {
-      const deletedUser = await this.userService.deleteUser(userId)
+      const deletedUser = await UserService().deleteById(userId)
       if (deletedUser) {
         res.json({ message: 'User deleted successfully' })
       } else {
@@ -121,6 +102,18 @@ class UserController {
         .json({ message: 'Internal Server Error', data: null, status: 500 })
     }
   }
+
+  const initializeRoutes = () => {
+    router.get('/', getAll)
+    router.get('/:id', getById)
+    router.post('/', create)
+    router.put('/:id', updateById)
+    router.delete('/:id', deleteById)
+  }
+
+  initializeRoutes()
+
+  return router
 }
 
 export { UserController }

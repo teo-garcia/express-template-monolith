@@ -1,19 +1,10 @@
 import type { Request, Response } from 'express'
 import { Router } from 'express'
 
-class HealthcheckController {
-  private router: Router
+const HealthcheckController = () => {
+  const router = Router()
 
-  constructor() {
-    this.router = Router()
-    this.initializeRoutes()
-  }
-
-  private initializeRoutes() {
-    this.router.get('/', this.getHealthcheck)
-  }
-
-  private async getHealthcheck(_req: Request, res: Response) {
+  const getHealthcheck = async (_req: Request, res: Response) => {
     res.json({
       status: 200,
       message: 'OK',
@@ -21,9 +12,13 @@ class HealthcheckController {
     })
   }
 
-  public getRouter() {
-    return this.router
+  const initializeRoutes = () => {
+    router.get('/', getHealthcheck)
   }
+
+  initializeRoutes()
+
+  return router
 }
 
 export { HealthcheckController }

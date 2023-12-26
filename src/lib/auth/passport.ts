@@ -4,11 +4,9 @@ import {
   Strategy as JwtStrategy,
   VerifiedCallback,
 } from 'passport-jwt'
-import { UserService } from '../../services/user.services'
+import { UserService } from '../../services/user.service'
 import type { User } from '../../entities/user.entity'
 import type { StrategyOptions } from 'passport-jwt'
-
-const userService = new UserService()
 
 const strategyOptions: StrategyOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -20,7 +18,7 @@ const verifyFn = async (
   next: VerifiedCallback
 ) => {
   try {
-    const user = await userService.getUserById(jwtPayload.id)
+    const user = await UserService().getById(jwtPayload.id)
 
     if (user) {
       return next(null, user)

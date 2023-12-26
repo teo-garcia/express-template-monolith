@@ -34,9 +34,9 @@ app.use(requestsLogger)
 
 logger.info('middlewares registered successfully')
 
-app.use('/healthcheck', new HealthcheckController().getRouter())
-app.use('/users', new UserController().getRouter())
-app.use('/auth', new AuthController().getRouter())
+app.use('/healthcheck', HealthcheckController())
+app.use('/users', UserController())
+app.use('/auth', AuthController())
 
 app.listen(port, host, () => {
   logger.info(`server running on ${baseUrl}`)
