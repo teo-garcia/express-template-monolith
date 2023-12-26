@@ -13,12 +13,12 @@ const port = parseInt(process.env?.PORT as string) || 3000
 const baseUrl = `http://${host}:${port}`
 const app = express()
 
-db.initialize()
+db.$connect()
   .then(() => {
     logger.info('database connection successfully')
   })
-  .catch((err) => {
-    logger.error(err)
+  .catch((error: Error) => {
+    logger.error(error.message)
     logger.error('database connection error')
   })
 
@@ -37,6 +37,8 @@ logger.info('middlewares registered successfully')
 app.use('/healthcheck', HealthcheckController())
 app.use('/users', UserController())
 app.use('/auth', AuthController())
+
+logger.info('routes registered successfully')
 
 app.listen(port, host, () => {
   logger.info(`server running on ${baseUrl}`)

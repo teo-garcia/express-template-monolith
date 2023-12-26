@@ -1,18 +1,17 @@
-import { Router } from 'express'
 import type { Response, Request } from 'express'
+import { Router } from 'express'
 import { UserService } from '../services/user.service'
-import { generateJWT } from '../lib/auth/jwt'
-import { comparePasswords } from '../lib/auth/bcrypt'
 import { logger } from '../lib/misc/logger'
 import { validateSchema } from '../lib/misc/validateSchema'
 import { signUpSchema, signInSchema } from '../lib/misc/schemas'
+import { comparePasswords, generateJWT } from '../lib/auth'
 
 const AuthController = () => {
   const router = Router()
 
   const createUser = async (req: Request, res: Response) => {
     const { data } = req.body
-    const { first_name, last_name, email, password } = data
+    const { firstName, lastName, email, password } = data
 
     try {
       const userExists = await UserService().getByEmail(email)
@@ -25,7 +24,7 @@ const AuthController = () => {
         return
       }
 
-      await UserService().create(first_name, last_name, email, password)
+      await UserService().create(firstName, lastName, email, password)
 
       res
         .status(201)
@@ -44,10 +43,12 @@ const AuthController = () => {
 
     try {
       const user = await UserService().getByEmail(email)
-      const passwordMatches =
-        user && (await comparePasswords(password, user.password))
+      const passwordMatches = await comparePasswords(
+        password,
+        user?.password ?? ''
+      )
 
-      if (!passwordMatches) {
+      if (!user || !passwordMatches) {
         res.status(409).json({
           status: 409,
           message: 'Incorrect email or password',
@@ -56,9 +57,8 @@ const AuthController = () => {
 
         return
       }
-
-      const token = generateJWT(user)
-      delete user.password
+      // TODO: Delete user password
+      const token = generateJWT(user.id)
 
       res.cookie('jwt', token, { httpOnly: true }).json({
         status: 200,

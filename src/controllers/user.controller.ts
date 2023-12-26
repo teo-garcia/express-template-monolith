@@ -19,7 +19,7 @@ const UserController = () => {
   }
 
   const getById = async (req: Request, res: Response) => {
-    const userId = req.params.id
+    const userId = parseInt(req.params.id)
 
     try {
       const user = await UserService().getById(userId)
@@ -58,7 +58,7 @@ const UserController = () => {
   }
 
   const updateById = async (req: Request, res: Response) => {
-    const userId = req.params.id
+    const userId = parseInt(req.params.id)
     const { first_name, last_name, email, password } = req.body
 
     try {
@@ -85,7 +85,7 @@ const UserController = () => {
   }
 
   const deleteById = async (req: Request, res: Response) => {
-    const userId = req.params.id
+    const userId = parseInt(req.params.id)
 
     try {
       const deletedUser = await UserService().deleteById(userId)

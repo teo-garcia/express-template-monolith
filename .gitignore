@@ -18,8 +18,6 @@ logs/
 # OS-specific files
 .DS_Store
 
-# TypeORM cache
-typeorm-cache/
 
 # TypeScript build cache
 *.tsbuildinfo

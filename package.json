@@ -17,11 +17,13 @@
     "serve:db": "docker compose up db",
     "dev": "concurrently --names 'app,db' -c 'bgBlue.bold,bgGreen.bold' \"yarn dev:api\" \"yarn dev:db\"",
     "build": "concurrently --names 'app,db' -c 'bgBlue.bold,bgGreen.bold' \"yarn build:api\" \"yarn serve:db\"",
-    "migrate:db": "npx typeorm-ts-node-esm migration:run -d 'src/lib/misc/db.ts'",
+    "migrate:db": "npx prisma migrate dev",
+    "pull:db": "npx prisma db pull",
     "lint:js": "eslint src/**/*.ts",
     "test:unit": "jest --passWithNoTests"
   },
   "dependencies": {
+    "@prisma/client": "^5.7.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
@@ -30,8 +32,6 @@
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.11.3",
-    "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.3.17",
     "typescript": "^5.3.2",
     "winston": "^3.11.0",
     "zod": "^3.22.4"

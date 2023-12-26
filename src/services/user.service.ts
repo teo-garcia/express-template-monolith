@@ -1,67 +1,65 @@
+import { hashPassword } from '../lib/auth'
 import { db } from '../lib/misc/db'
-import { User } from '../entities/user.entity'
-import { hashPassword } from '../lib/auth/bcrypt'
 
 const UserService = () => {
-  const getAll = async (): Promise<User[]> => {
-    return await db.getRepository(User).find()
+  const getAll = async () => {
+    return await db.user.findMany()
   }
 
-  const getById = async (id: string): Promise<User | null> => {
-    return await db.getRepository(User).findOne({
+  const getById = async (id: number) => {
+    return await db.user.findUnique({
       where: { id },
     })
   }
 
-  const getByEmail = async (email: string): Promise<User | null> => {
-    return await db.getRepository(User).findOne({
+  const getByEmail = async (email: string) => {
+    return await db.user.findUnique({
       where: { email },
     })
   }
 
   const create = async (
-    first_name: string,
-    last_name: string,
+    firstName: string,
+    lastName: string,
     email: string,
     password: string
   ): Promise<void> => {
-    const newUser = await db.getRepository(User).create({
-      first_name,
-      last_name,
-      email,
-      password: await hashPassword(password),
+    await db.user.create({
+      data: {
+        firstName,
+        lastName,
+        email,
+        password: await hashPassword(password),
+      },
     })
-
-    await db.getRepository(User).save(newUser)
   }
 
   const updateById = async (
-    id: string,
-    first_name: string,
-    last_name: string,
+    id: number,
+    firstName: string,
+    lastName: string,
     email: string,
     password: string
-  ): Promise<User | undefined> => {
-    const user = await db.getRepository(User).findOne({
+  ) => {
+    const updatedUser = await db.user.update({
+      where: { id },
+      data: {
+        firstName,
+        lastName,
+        email,
+        password,
+      },
+    })
+
+    return updatedUser
+  }
+
+  const deleteById = async (id: number) => {
+    const deletedUser = await db.user.delete({
       where: { id },
     })
 
-    if (!user) return
-
-    user.first_name = first_name
-    user.last_name = last_name
-    user.email = email
-    user.password = password
-
-    return await db.getRepository(User).save(user)
-  }
-
-  const deleteById = async (id: string): Promise<User | undefined> => {
-    const user = await db.getRepository(User).findOne({ where: { id } })
-
-    if (!user) return
-
-    return await db.getRepository(User).remove(user)
+    return deletedUser
   }
 
   return {
