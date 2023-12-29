@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 import { Router } from 'express'
-import { UserService } from '../services/user.service'
-import { logger } from '../lib/misc/logger'
+import { UserService } from 'services/user.service'
+import { logger } from 'lib/logger'
 
 const UserController = () => {
   const router = Router()

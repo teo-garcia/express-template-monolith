@@ -1,5 +1,5 @@
-import { hashPassword } from '../lib/auth'
-import { db } from '../lib/misc/db'
+import { hashPassword } from 'lib/auth'
+import { db } from 'lib/db'
 
 const UserService = () => {
   const getAll = async () => {

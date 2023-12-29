@@ -1,10 +1,10 @@
 import type { Response, Request } from 'express'
 import { Router } from 'express'
-import { UserService } from '../services/user.service'
-import { logger } from '../lib/misc/logger'
-import { validateSchema } from '../lib/misc/validateSchema'
-import { signUpSchema, signInSchema } from '../lib/misc/schemas'
-import { comparePasswords, generateJWT } from '../lib/auth'
+import { UserService } from 'services/user.service'
+import { logger } from 'lib/logger'
+import { validateSchema } from 'lib/validateSchema'
+import { signUpSchema, signInSchema } from 'lib/schemas'
+import { comparePasswords, generateJWT } from 'lib/auth'
 
 const AuthController = () => {
   const router = Router()

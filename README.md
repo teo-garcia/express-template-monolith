@@ -8,8 +8,8 @@ This is a monolithic Express template project for building backend applications.
 ## Requirements
 
 - Node.js 18+
-- Dockergh i
-- Yarn
+- Docker 24+
+- pnpm 8+
 
 ## Installation
 
@@ -22,13 +22,13 @@ This is a monolithic Express template project for building backend applications.
 2. Install dependencies:
 
 ```bash
-  yarn dev
+  pnpm install
 ```
 
 3. Run the project:
 
 ```bash
-  yarn dev
+  pnpm dev
 ```
 
 ## Tools

@@ -6,7 +6,7 @@ import {
   Strategy as JwtStrategy,
   VerifiedCallback,
 } from 'passport-jwt'
-import { UserService } from '../services/user.service'
+import { UserService } from 'services/user.service'
 import type { StrategyOptions } from 'passport-jwt'
 import jwt from 'jsonwebtoken'
 

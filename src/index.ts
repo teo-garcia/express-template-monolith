@@ -2,11 +2,13 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import passport from 'passport'
-import { HealthcheckController } from './controllers/healthcheck.controller'
-import { UserController } from './controllers/user.controller'
-import { AuthController } from './controllers/auth.controller'
-import { db } from './lib/misc/db'
-import { logger, requestsLogger } from './lib/misc/logger'
+
+import { UserController } from 'controllers/user.controller'
+import { AuthController } from 'controllers/auth.controller'
+import { HealthcheckController } from 'controllers/healthcheck.controller'
+
+import { db } from 'lib/db'
+import { logger, requestsLogger } from 'lib/logger'
 
 const host = process.env?.SERVER_HOST || '0.0.0.0'
 const port = parseInt(process.env?.PORT as string) || 3000
@@ -32,16 +34,16 @@ app.use(express.json())
 app.use(passport.initialize())
 app.use(requestsLogger)
 
-logger.info('middlewares registered successfully')
+logger.info('application middlewares registered successfully')
 
 app.use('/healthcheck', HealthcheckController())
 app.use('/users', UserController())
 app.use('/auth', AuthController())
 
-logger.info('routes registered successfully')
+logger.info('application routes registered successfully')
 
 app.listen(port, host, () => {
-  logger.info(`server running on ${baseUrl}`)
+  logger.info(`application server running on ${baseUrl}`)
 })
 
 export { app }
