@@ -10,7 +10,7 @@ const customFormat = format.combine(
   format.splat(),
   format.json(),
   format.printf(({ level, message, timestamp }) => {
-    return `[${level}] ${message}  [${timestamp}]`
+    return `[${timestamp}] [${level}] ${message}`
   })
 )
 
@@ -35,7 +35,7 @@ const requestsLogger: RequestHandler = (req, _res, next) => {
   const { method, path } = req
   const timestamp = new Date().toISOString()
 
-  const message = `${method} ${path}  ${timestamp}`
+  const message = `${timestamp} ${method} ${path}`
 
   logger.info(message)
 

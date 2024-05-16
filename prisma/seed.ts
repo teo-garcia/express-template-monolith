@@ -1,7 +1,9 @@
 import 'dotenv/config'
 import { db } from '../src/lib/db'
-import { hashPassword } from '../src/lib/auth'
+import { Auth } from '../src/lib/auth'
 import { logger } from '../src/lib/logger'
+
+const auth = Auth()
 
 const seed = async () => {
   // const isDevelopment = process.env.NODE_ENV === 'development'
@@ -13,13 +15,13 @@ const seed = async () => {
   //   return
   // }
   logger.info('creating seed data')
-  const hashedAdminPasword = await hashPassword('mode')
+  const hashedAdminPassword = await auth.hashPassword('mode')
 
   const adminUser = {
     firstName: 'Mateo',
     lastName: 'Garcia',
     email: 'god@etm.com',
-    password: hashedAdminPasword,
+    password: hashedAdminPassword,
     role: 'admin',
   }
   await db.user.deleteMany()
@@ -30,8 +32,7 @@ const seed = async () => {
   for (let i = 1; i <= 9; i++) {
     const userEmail = `user${i}@etm.com`
     const userPassword = 'your_user_password'
-
-    const hashedUserPassword = await hashPassword(userPassword)
+    const hashedUserPassword = await auth.hashPassword(userPassword)
 
     await db.user
       .create({
