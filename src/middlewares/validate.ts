@@ -1,11 +1,11 @@
 import type { NextFunction, Request, Response } from 'express'
 import { ZodError, ZodSchema } from 'zod'
 
-const validateSchema =
+const validateBody =
   <T>(schema: ZodSchema<T>) =>
   (req: Request, res: Response, next: NextFunction) => {
     try {
-      schema.parse(req.body.data)
+      schema.parse(req.body)
       next()
     } catch (error) {
       if (error instanceof ZodError) {
@@ -24,4 +24,4 @@ const validateSchema =
     }
   }
 
-export { validateSchema }
+export { validateBody }

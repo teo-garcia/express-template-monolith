@@ -1,10 +1,15 @@
-import { db } from 'lib/db'
+import 'dotenv/config'
+import { db } from './lib/db'
 import { App } from './app'
-import { logger, requestsLogger } from 'lib/logger'
+import { logger } from './lib/logger'
+import { errorHandler } from './middlewares/errorHandler'
+import { requestLogger } from './middlewares/requestLogger'
 
-const app = App(db, logger, requestsLogger)
+const middlewares = {
+  requestLogger,
+  errorHandler,
+}
 
-app.connectDatabase()
-app.registerMiddlewares()
-app.registerRoutes()
-app.startServer()
+const app = new App(db, logger, middlewares)
+
+app.initialize()

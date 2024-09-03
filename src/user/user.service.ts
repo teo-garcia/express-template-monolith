@@ -1,6 +1,6 @@
-import { Auth } from 'lib/auth'
-import { db } from 'lib/db'
-import { logger } from 'lib/logger'
+import { Auth } from '../lib/auth'
+import { db } from '../lib/db'
+import { logger } from '../lib/logger'
 import createError from 'http-errors'
 import { INTERNAL_SERVER_ERROR, NOT_FOUND } from 'http-status'
 
@@ -41,10 +41,6 @@ const UserService = () => {
       const user = await db.user.findUnique({
         where: { email },
       })
-
-      if (!user) {
-        throw createError(NOT_FOUND, `User with email ${email} not found`)
-      }
 
       return user
     } catch (error) {

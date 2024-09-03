@@ -1,5 +1,4 @@
 import 'dotenv'
-import { RequestHandler } from 'express'
 import { createLogger, format, transports } from 'winston'
 
 const customFormat = format.combine(
@@ -31,15 +30,4 @@ if (process.env.NODE_ENV !== 'production') {
   )
 }
 
-const requestsLogger: RequestHandler = (req, _res, next) => {
-  const { method, path } = req
-  const timestamp = new Date().toISOString()
-
-  const message = `${timestamp} ${method} ${path}`
-
-  logger.info(message)
-
-  next()
-}
-
-export { logger, requestsLogger }
+export { logger }

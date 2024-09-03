@@ -1,6 +1,5 @@
 import bcrypt from 'bcryptjs'
 import passport from 'passport'
-import { UserService } from 'services/user.service'
 import type { StrategyOptions } from 'passport-jwt'
 import jwt from 'jsonwebtoken'
 import {
@@ -8,6 +7,7 @@ import {
   Strategy as JwtStrategy,
   VerifiedCallback,
 } from 'passport-jwt'
+import { UserService } from '../user/user.service'
 
 const Auth = () => {
   const saltRounds = 10

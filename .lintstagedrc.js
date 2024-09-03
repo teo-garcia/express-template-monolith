@@ -1,3 +1,3 @@
 module.exports = {
-  '**/*.{js,ts}': ['npx prettier --write', 'npm run lint:js --fix'],
+  '**/*.{js,ts}': ['npx prettier --write', 'npm run lint --fix'],
 }
