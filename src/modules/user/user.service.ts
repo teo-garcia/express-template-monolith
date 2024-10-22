@@ -1,13 +1,17 @@
-import { Auth } from '../lib/auth'
-import { db } from '../lib/db'
-import { logger } from '../lib/logger'
+import { db } from 'lib/db'
+import { logger } from 'lib/logger'
 import createError from 'http-errors'
 import { INTERNAL_SERVER_ERROR, NOT_FOUND } from 'http-status'
+import { AuthUtils } from 'lib/auth'
 
-const UserService = () => {
-  const auth = Auth()
+class UserService {
+  private authUtils: AuthUtils
 
-  const getAll = async () => {
+  constructor(authUtils: AuthUtils) {
+    this.authUtils = authUtils
+  }
+
+  async getAll() {
     try {
       return await db.user.findMany()
     } catch (error) {
@@ -16,7 +20,7 @@ const UserService = () => {
     }
   }
 
-  const getById = async (id: number) => {
+  async getById(id: number) {
     try {
       const user = await db.user.findUnique({
         where: { id },
@@ -36,7 +40,7 @@ const UserService = () => {
     }
   }
 
-  const getByEmail = async (email: string) => {
+  async getByEmail(email: string) {
     try {
       const user = await db.user.findUnique({
         where: { email },
@@ -55,19 +59,19 @@ const UserService = () => {
     }
   }
 
-  const create = async (
+  async create(
     firstName: string,
     lastName: string,
     email: string,
     password: string
-  ): Promise<void> => {
+  ): Promise<void> {
     try {
       await db.user.create({
         data: {
           firstName,
           lastName,
           email,
-          password: await auth.hashPassword(password),
+          password: await this.authUtils.hashPassword(password),
         },
       })
     } catch (error) {
@@ -76,13 +80,13 @@ const UserService = () => {
     }
   }
 
-  const updateById = async (
+  async updateById(
     id: number,
     firstName: string,
     lastName: string,
     email: string,
     password: string
-  ) => {
+  ) {
     try {
       const updatedUser = await db.user.update({
         where: { id },
@@ -104,7 +108,7 @@ const UserService = () => {
     }
   }
 
-  const deleteById = async (id: number) => {
+  async deleteById(id: number) {
     try {
       const deletedUser = await db.user.delete({
         where: { id },
@@ -118,15 +122,6 @@ const UserService = () => {
         `Failed to delete user with id ${id}`
       )
     }
-  }
-
-  return {
-    create,
-    deleteById,
-    getAll,
-    getByEmail,
-    getById,
-    updateById,
   }
 }
 

@@ -7,37 +7,48 @@ import {
   Strategy as JwtStrategy,
   VerifiedCallback,
 } from 'passport-jwt'
-import { UserService } from '../user/user.service'
+import { UserService } from 'modules/user/user.service'
 
-const Auth = () => {
-  const saltRounds = 10
-  const signKey = '1234567890'
-  const secretKey = '123456790'
+class AuthUtils {
+  private saltRounds: number
+  private signKey: string
 
-  const comparePasswords = async (
+  constructor(saltRounds: number, signKey: string) {
+    this.saltRounds = saltRounds
+    this.signKey = signKey
+  }
+
+  public async hashPassword(password: string): Promise<string> {
+    return await bcrypt.hash(password, this.saltRounds)
+  }
+
+  public async comparePasswords(
     password: string,
     hashedPassword: string
-  ): Promise<boolean> => {
+  ): Promise<boolean> {
     if (!hashedPassword) return false
     return await bcrypt.compare(password, hashedPassword)
   }
 
-  const hashPassword = async (password: string): Promise<string> => {
-    return await bcrypt.hash(password, saltRounds)
-  }
-
-  const generateJWT = (id: number): string => {
-    return jwt.sign({ id }, signKey, {
+  public generateJWT(id: number): string {
+    return jwt.sign({ id }, this.signKey, {
       expiresIn: '1h',
     })
   }
+}
 
-  const verifyFn = async (
-    jwtPayload: { id: number },
-    next: VerifiedCallback
-  ) => {
+class AuthPassport {
+  private secretKey: string
+  private userService: UserService
+
+  constructor(secretKey: string, userService: UserService) {
+    this.secretKey = secretKey
+    this.userService = userService
+  }
+
+  private async verifyFn(jwtPayload: { id: number }, next: VerifiedCallback) {
     try {
-      const user = await UserService().getById(jwtPayload.id)
+      const user = await this.userService.getById(jwtPayload.id)
 
       if (user) {
         return next(null, user)
@@ -49,24 +60,16 @@ const Auth = () => {
     }
   }
 
-  const createJwtStrategy = (): JwtStrategy => {
+  public createJwtStrategy(): JwtStrategy {
     const strategyOptions: StrategyOptions = {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: secretKey,
+      secretOrKey: this.secretKey,
     }
 
-    return new JwtStrategy(strategyOptions, verifyFn)
+    return new JwtStrategy(strategyOptions, this.verifyFn.bind(this))
   }
 
-  const authenticate = passport.authenticate('jwt', { session: false })
-
-  return {
-    comparePasswords,
-    hashPassword,
-    generateJWT,
-    createJwtStrategy,
-    authenticate,
-  }
+  public authenticate = passport.authenticate('jwt', { session: false })
 }
 
-export { Auth }
+export { AuthUtils, AuthPassport }

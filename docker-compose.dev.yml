@@ -1,36 +1,6 @@
-version: '3.8'
+version: '3.9'
 
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    ports:
-      - '3000:3000'
-    # develop:
-    #   watch:
-    #     - path: ./package.json
-    #       action: rebuild
-    #     - path: ./pnpm-lock.yaml
-    #       action: rebuild
-    #     - path: ./src
-    #       target: /usr/src/app/src
-    #       action: sync
-    #     - path: ./prisma
-    #       target: /usr/src/app/prisma
-    #       action: sync
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-      DATABASE_URL: ${DATABASE_URL}
-      NODE_ENV: development
-    depends_on:
-      - db
-
   db:
     image: postgres:latest
     ports:

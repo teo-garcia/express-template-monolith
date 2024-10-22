@@ -2,12 +2,12 @@ import 'dotenv/config'
 import { db } from './lib/db'
 import { App } from './app'
 import { logger } from './lib/logger'
-import { errorHandler } from './middlewares/errorHandler'
-import { requestLogger } from './middlewares/requestLogger'
+import { errorHandlerMiddleware } from './middlewares/errorHandlerMiddleware'
+import { requestLoggerMiddleware } from './middlewares/requestLoggerMiddleware'
 
 const middlewares = {
-  requestLogger,
-  errorHandler,
+  requestLoggerMiddleware,
+  errorHandlerMiddleware,
 }
 
 const app = new App(db, logger, middlewares)
